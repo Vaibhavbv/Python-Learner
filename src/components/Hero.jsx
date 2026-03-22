@@ -102,7 +102,7 @@ export default function Hero() {
   }
 
   return (
-    <div className="max-w-[960px] mx-auto px-5 pt-16 pb-10">
+    <div className="max-w-7xl mx-auto px-5 pt-16 pb-10">
       <div className="flex flex-col md:flex-row items-center gap-8">
         {/* Left side */}
         <div className="flex-1 text-center md:text-left">
@@ -134,11 +134,11 @@ export default function Hero() {
           </div>
           <button
             onClick={scrollToSections}
-            className="mt-6 font-mono text-sm px-6 py-2.5 rounded-lg transition-all duration-200 cursor-pointer"
+            className="mt-8 font-mono font-medium text-sm px-8 py-3 rounded-xl transition-all duration-300 cursor-pointer hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] active:scale-95"
             style={{
-              background: 'var(--accent)',
-              color: '#fff',
-              border: 'none',
+              background: 'linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, black) 100%)',
+              color: '#ffffff',
+              border: '1px solid color-mix(in srgb, var(--accent) 50%, white)',
             }}
           >
             start learning ↓

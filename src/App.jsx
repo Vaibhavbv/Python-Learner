@@ -45,7 +45,7 @@ function AppContent() {
         <Hero />
       </motion.div>
 
-      <div className="max-w-[960px] mx-auto px-5">
+      <div className="max-w-7xl mx-auto px-5">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
