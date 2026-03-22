@@ -1,0 +1,28 @@
+
+> python-roadmap@1.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 2774 modules transformed.
+x Build failed in 6.44s
+error during build:
+src/components/CommandPalette.jsx (6:9): "useTheme" is not exported by "src/context/ThemeContext.jsx", imported by "src/components/CommandPalette.jsx".
+file: /home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/src/components/CommandPalette.jsx:6:9
+
+4: import { Search, Moon, Sun, RefreshCw, Code2 } from 'lucide-react'
+5: import { TOPICS_MAP } from '../data'
+6: import { useTheme } from '../context/ThemeContext'
+            ^
+7: import { useProgress } from '../context/ProgressContext'
+
+    at getRollupError (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/parseAst.js:406:41)
+    at error (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/parseAst.js:402:42)
+    at Module.error (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:17065:16)
+    at Module.traceVariable (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:17477:29)
+    at ModuleScope.findVariable (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:15090:39)
+    at FunctionScope.findVariable (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:5676:38)
+    at FunctionBodyScope.findVariable (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:5676:38)
+    at Identifier.bind (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:5450:40)
+    at CallExpression.bind (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:2832:23)
+    at CallExpression.bind (file:///home/vaibhav-agrawal/Documents/Projects/Personal/Python-Learning/node_modules/rollup/dist/es/shared/node-entry.js:12199:15)

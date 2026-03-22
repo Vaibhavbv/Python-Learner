@@ -1,0 +1,13 @@
+
+> python-roadmap@1.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 2774 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     1.04 kB │ gzip:   0.59 kB
+dist/assets/index-DQF8dGQ9.css     19.02 kB │ gzip:   5.12 kB
+dist/assets/index-D5RpewBF.js   1,237.58 kB │ gzip: 358.39 kB
+✓ built in 8.84s
