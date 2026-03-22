@@ -117,10 +117,10 @@ export default function ContentPanel({ topic }) {
         ))}
       </div>
 
-      {/* DE Relevance */}
-      <SectionTitle>DE/Backend Relevance 🏗️</SectionTitle>
+      {/* Real World */}
+      <SectionTitle>Real World Use 🌍</SectionTitle>
       <div className="rounded-md p-4 mb-6" style={{ background: 'color-mix(in srgb, var(--accent) 8%, var(--bg-surface))', border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)' }}>
-        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }} dangerouslySetInnerHTML={{ __html: c.de_relevance }} />
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }} dangerouslySetInnerHTML={{ __html: c.real_world }} />
       </div>
 
       {/* Quiz */}

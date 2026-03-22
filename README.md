@@ -3,7 +3,7 @@
 
   # Python Mastery Roadmap 🐍
 
-  **A premium, interactive Python learning roadmap with 60 topics covering core fundamentals to advanced internals. Built for data engineers who want to level up.**
+  **A premium, interactive Python learning roadmap with 60 topics covering core fundamentals to advanced internals. Built for anyone who wants to level up.**
 
   [![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
   [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
@@ -19,8 +19,8 @@ This isn't your average "hello world" tutorial. This roadmap is designed with th
 
 No more boring documentation. We’re talking:
 - 🚀 **Real-world Context:** Why you *actually* need to know this stuff in production.
-- 🏗️ **DE Relevance:** How topics directly apply to Airflow, dbt, Pydantic, and Redshift.
-- 🚨 **Gotchas:** The hidden traps that will crash your pipeline at 3 AM.
+- 🏗️ **Relatable Examples:** How topics apply to games, chatbots, Spotify queues, and apps.
+- 🚨 **Gotchas:** The hidden traps that will crash your code at 3 AM.
 - 🎯 **Interactive Quizzes:** Test your knowledge instantly.
 
 ---
@@ -103,5 +103,5 @@ The curriculum is broken down into **15 Core Sections**:
 
 <div align="center">
   <p><i>"Write code like your future self is a psychopath who knows where you live."</i></p>
-  <b>Built for Data Engineers wanting to level up their Python game.</b> 🐍
+  <b>Built for anyone wanting to level up their Python game.</b> 🐍
 </div>

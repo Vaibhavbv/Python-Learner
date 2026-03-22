@@ -8,256 +8,171 @@ export const s03 = {
       id: "t09",
       name: "Classes & Objects",
       imp: "must",
-      subtopics: ["__init__/__repr__/__str__", "instance vs class vars", "self keyword", "object creation lifecycle"],
+      subtopics: ["__init__/__repr__/__str__", "instance vs class vars", "self keyword", "object lifecycles"],
       content: {
         locked: false,
-        vibe: "Classes 🏗️ — every Airflow operator, every Pydantic model, every dbt class is OOP. You're already using it.",
+        vibe: "Classes 🏗️ — every game character, user account, and YouTube video is an object. OOP models the world.",
         explanation: [
-          "A class is a blueprint, an object is a thing built from that blueprint. Class = cookie cutter, object = cookie. <code>class Order:</code> defines the template, <code>my_order = Order()</code> creates an actual order. Every time you use <code>pd.DataFrame()</code>, you're creating an object from the DataFrame class.",
-          "<code>__init__</code> is the constructor — it runs when you create a new object. <code>self</code> is just \"this object right here\" — it's how the object refers to itself. <code>self.name = name</code> stores data ON this specific object.",
-          "<strong>Instance variables</strong> belong to ONE object (<code>self.name</code>). <strong>Class variables</strong> are shared across ALL objects. Think: instance var = \"MY name\", class var = \"OUR species\". Mixing these up causes bugs where modifying one object affects all of them.",
-          "<code>__repr__</code> is for developers (debugger), <code>__str__</code> is for users (print). Always define <code>__repr__</code> — a good one should let you recreate the object: <code>Order(id='Z001', amount=450)</code>."
+          "A **Class** is a blueprint. An **Object** is a specific thing built from that blueprint. A cookie-cutter is the class, the cookie is the object. <code>class Player:</code> defines what a player can do, <code>p1 = Player()</code> spawns a specific player.",
+          "<code>__init__</code> runs automatically when the object is spawned (it 'initializes' it).",
+          "<code>self</code> just means 'this specific object right here'. If you have 10 players, <code>self.health</code> checks the health of whichever player is currently being looked at.",
+          "<strong>Instance variables</strong> (<code>self.name</code>) belong to ONE object. <strong>Class variables</strong> belong to ALL objects created from that class. Mixing them up leads to players sharing inventories."
         ],
         ascii: `  # Class (Blueprint) → Object (Instance)
 
-  ┌──────────────────────────────┐
-  │  class PipelineTask:         │  ← Blueprint (class)
-  │    type = "etl"              │  ← Class variable (shared)
-  │                              │
-  │    def __init__(self, name): │
-  │      self.name = name        │  ← Instance variable (per obj)
-  │      self.status = "pending" │
-  └──────────────────────────────┘
-           │              │
-     ┌─────┘              └─────┐
-     ▼                          ▼
-  ┌──────────────┐   ┌──────────────┐
-  │ Object #1    │   │ Object #2    │
-  │ name="extract│   │ name="load"  │
-  │ status="done"│   │ status="run" │
-  │ type="etl"   │   │ type="etl"   │ ← same for all
-  └──────────────┘   └──────────────┘`,
+  ┌─────────────────────────────┐
+  │  class Player:              │ ← Blueprint
+  │    total_players = 0        │ ← Class Variable (Shared)
+  │                             │
+  │    def __init__(self, name):│
+  │      self.name = name       │ ← Instance Var (Unique)
+  │      self.hp = 100          │
+  └─────────────────────────────┘
+          │             │
+      ┌───┘             └───┐
+      ▼                     ▼
+  ┌────────────┐      ┌────────────┐
+  │ Object #1  │      │ Object #2  │
+  │ name="Ash" │      │ name="Gary"│
+  │ hp=100     │      │ hp=100     │
+  └────────────┘      └────────────┘`,
         code: [
           {
-            label: "🏗️ Building a real pipeline task class",
+            label: "👾 Pokemon Battle System — OOP in action",
             language: "python",
-            code: `from datetime import datetime
+            code: `class Pokemon:
+    # __init__ sets up the pokemon when it's caught/spawned
+    def __init__(self, name, type, hp, attack_power):
+        self.name = name               # Instance variable
+        self.type = type
+        self.hp = hp
+        self.attack_power = attack_power
 
-class PipelineTask:
-    """A single task in a data pipeline — OOP done right 🎯"""
-    total_tasks = 0  # Class variable — shared
+    # A method (a function that belongs to this class)
+    def attack(self, target):
+        print(f"⚡ {self.name} attacks {target.name} for {self.attack_power} damage!")
+        target.hp -= self.attack_power
+        if target.hp <= 0:
+            print(f"💀 {target.name} fainted!")
 
-    def __init__(self, name, source, destination):
-        self.name = name
-        self.source = source
-        self.destination = destination
-        self.status = "pending"
-        self.created_at = datetime.now()
-        self.rows_processed = 0
-        PipelineTask.total_tasks += 1
-
-    def run(self, data):
-        self.status = "running"
-        self.rows_processed = len(data)
-        self.status = "completed"
-        return data
-
-    def __repr__(self):
-        return f"PipelineTask(name='{self.name}', status='{self.status}')"
-
+    # __str__ controls how the object looks when you print() it
     def __str__(self):
-        return f"[{self.status.upper()}] {self.name}: {self.source} → {self.destination}"
+        return f"[{self.name} | HP: {self.hp} | {self.type}]"
 
-extract = PipelineTask("extract_orders", "Zomato API", "staging_db")
-transform = PipelineTask("clean_data", "staging_db", "warehouse")
-print(extract)       # [PENDING] extract_orders: Zomato API → staging_db
-print(repr(transform))  # PipelineTask(name='clean_data', status='pending')
-print(f"Total: {PipelineTask.total_tasks}")  # 2`
-          },
-          {
-            label: "⚠️ Class vs Instance variable trap",
-            language: "python",
-            code: `# THE TRAP: mutable class variable
-class BadTracker:
-    events = []  # SHARED by ALL instances!
-    def add_event(self, event):
-        self.events.append(event)
+# Spawning objects (instantiation)
+pikachu = Pokemon("Pikachu", "Electric", hp=100, attack_power=25)
+charizard = Pokemon("Charizard", "Fire", hp=150, attack_power=40)
 
-a = BadTracker()
-b = BadTracker()
-a.add_event("click")
-print(b.events)  # ['click'] — b got a's event! 🐛
+print(pikachu)       # [Pikachu | HP: 100 | Electric]
 
-# THE FIX: use instance variables for mutable data
-class GoodTracker:
-    def __init__(self):
-        self.events = []  # unique per object ✅
-    def add_event(self, event):
-        self.events.append(event)
-
-a = GoodTracker()
-b = GoodTracker()
-a.add_event("click")
-print(b.events)  # [] — correctly isolated! 🎯`
+# Using methods
+pikachu.attack(charizard)  # ⚡ Pikachu attacks Charizard for 25 damage!
+charizard.attack(pikachu)  # ⚡ Charizard attacks Pikachu for 40 damage!
+charizard.attack(pikachu)  # ⚡ Charizard attacks Pikachu for 40 damage!`
           }
         ],
         gotchas: [
-          { title: "Mutable class variables are shared", body: "class Foo: items = [] means ALL instances share the same list. Use __init__ for mutable data." },
-          { title: "Forgetting self", body: "def get_name(): inside a class won't work. You need def get_name(self):. Python doesn't do implicit this." },
-          { title: "__repr__ vs __str__", body: "If you only implement one, do __repr__. It's used by debuggers, logging, and as fallback for str()." }
+          { title: "Forgetting the 'self' argument", body: "Every method inside a class MUST have `self` as the first parameter. `def attack(target):` will crash. It must be `def attack(self, target):`" },
+          { title: "Mutable class variables", body: "If you define `inventory = []` directly under the class (not inside __init__), EVERY object shares the exact same inventory list." }
         ],
-        de_relevance: "Everything in the DE stack is OOP. <strong>Airflow</strong>: <code>class MyDAG(DAG)</code>. <strong>Pydantic</strong>: <code>class UserModel(BaseModel)</code>. <strong>SQLAlchemy</strong>: <code>class User(Base)</code>. <strong>FastAPI</strong>: routers are class instances. When you write a custom Airflow operator, you're writing a class with <code>__init__</code> and <code>execute()</code>.",
+        real_world: "When developers build Spotify, a Song isn't just a bunch of random variables floating around. They build a `class Song:` that bundles the `title`, `duration`, `file_url`, and `album_art` together. Then they add methods like `song.play()` or `song.pause()`. OOP groups data and the actions you can perform on that data into one neat package.",
         quiz: [
-          { q: "What does self refer to?", options: ["The class itself", "The current instance", "The parent class", "The module"], answer: 1, explanation: "self is the specific object calling the method — 'this instance right here.'" },
-          { q: "When does __init__ run?", options: ["Class defined", "Object created", "Method called", "Module imported"], answer: 1, explanation: "__init__ runs when you do MyClass() — it initializes the new object." },
-          { q: "Class variables are:", options: ["Unique per instance", "Shared across all", "Private by default", "Immutable"], answer: 1, explanation: "Class variables belong to the class, not instances. All objects share them." }
+          { q: "What does `self` refer to?", options: ["The class itself", "The current instance object", "The parent class", "Nothing"], answer: 1, explanation: "self refers to the specific instance currently being used." }
         ],
-        resources: [
-          { label: "Python Docs — Classes", url: "https://docs.python.org/3/tutorial/classes.html" },
-          { label: "Real Python — OOP in Python", url: "https://realpython.com/python3-object-oriented-programming/" }
-        ]
+        resources: []
       }
     },
     {
       id: "t10",
       name: "Inheritance & Polymorphism",
       imp: "must",
-      subtopics: ["single & multiple inheritance", "super()", "method overriding", "MRO (Method Resolution Order)"],
+      subtopics: ["single & multiple inheritance", "super()", "method overriding", "MRO"],
       content: {
         locked: false,
-        vibe: "Inheritance 🧬 — Airflow's BaseOperator → your custom operators. This pattern is literally everywhere.",
+        vibe: "Inheritance 🧬 — every game engine UI uses it. A Button is a Widget. A Dog is an Animal. It just clicks.",
         explanation: [
-          "<strong>Inheritance</strong> is \"I want everything my parent has, plus my own stuff.\" When you write <code>class MyOperator(BaseOperator):</code>, your operator gets scheduling, retries, and logging for free. You just override what's specific to your task.",
-          "<code>super()</code> calls the parent class's method. Crucial in <code>__init__</code> — if you forget <code>super().__init__()</code>, the parent's initialization doesn't run and things break silently. Always call super().__init__() first.",
-          "<strong>Method overriding</strong> is polymorphism — the child replaces a parent's method with its own version. Same method name, different behavior. This is why <code>.execute()</code> on any Airflow operator does the right thing.",
-          "<strong>MRO</strong> matters with multiple inheritance. Python uses C3 linearization. Check with <code>MyClass.__mro__</code>. In practice, avoid complex multiple inheritance — use it for mixins (small, focused behavior additions)."
+          "<strong>Inheritance</strong> is saying: 'I want this new class to have everything that other class has, plus a few extra things.' It stops you from rewriting the same code.",
+          "<code>super()</code> is how the child talks to the parent. Commonly used in <code>__init__</code>: 'Hey parent, do your setup stuff first, then I will do my specific setup stuff.'",
+          "<strong>Polymorphism</strong> (method overriding) means you can have a parent class with an <code>.attack()</code> method, but the child class can completely write its own custom <code>.attack()</code> method that overrides the parent's.",
+          "MRO (Method Resolution Order) only matters if you inherit from MULTIPLE parents. It's the order Python checks parents to find a method."
         ],
-        ascii: `  # Inheritance — Real-World Pattern
+        ascii: `  # Inheritance Tree
 
-  BaseOperator (Airflow's base)
-       │
-       │  has: execute(), retry_logic, logging
-       │
-       ├──── PythonOperator
-       │     └── execute() → runs python_callable
-       │
-       ├──── BashOperator
-       │     └── execute() → runs bash command
-       │
-       └──── MyCustomOperator  ← your code!
-             └── execute() → your logic here
-
-  # MRO — Method Resolution Order
-  class D(B, C):   ← multiple inheritance
-  MRO: D → B → C → A → object
-  First match wins! 🎯`,
+           [ Animal ]
+           (has: sleep(), eat())
+              │
+      ┌───────┴───────┐
+      │               │
+  [ Dog ]         [ Cat ]
+  bark()          meow()
+  eat() <-- override!`,
         code: [
           {
-            label: "🏗️ Custom Airflow-style operator — inheritance in action",
+            label: "🎮 Game Enemies — inheriting base behaviors",
             language: "python",
-            code: `class BaseOperator:
-    def __init__(self, task_id, retries=3):
-        self.task_id = task_id
-        self.retries = retries
-        self.status = "pending"
+            code: `class Enemy:
+    def __init__(self, hp):
+        self.hp = hp
+        self.is_alive = True
 
-    def execute(self, context):
-        raise NotImplementedError("Subclasses must implement execute()")
+    def take_damage(self, amount):
+        self.hp -= amount
+        if self.hp <= 0:
+            self.die()
 
-    def run(self, context=None):
-        for attempt in range(self.retries):
-            try:
-                self.status = "running"
-                result = self.execute(context or {})
-                self.status = "success"
-                print(f"✅ {self.task_id}: completed")
-                return result
-            except Exception as e:
-                print(f"⚠️ {self.task_id}: attempt {attempt+1} failed — {e}")
-        self.status = "failed"
+    def die(self):
+        self.is_alive = False
+        print("Enemy died with a standard death sound.")
 
-class APIExtractOperator(BaseOperator):
-    def __init__(self, task_id, endpoint, **kwargs):
-        super().__init__(task_id, **kwargs)  # 🎯 always call super!
-        self.endpoint = endpoint
+# Zombie inherits from Enemy! Gets take_damage() for free.
+class Zombie(Enemy):
+    def __init__(self):
+        super().__init__(hp=50) # Call parent setup!
 
-    def execute(self, context):
-        print(f"  📡 Fetching from {self.endpoint}...")
-        return {"data": [1, 2, 3], "count": 3}
+    # Method Overriding (Polymorphism)
+    def die(self):
+        self.is_alive = False
+        print("Zombie groans and drops Rotten Flesh! 🧟")
 
-class RedshiftLoadOperator(BaseOperator):
-    def __init__(self, task_id, schema, table, **kwargs):
-        super().__init__(task_id, **kwargs)
-        self.schema = schema
-        self.table = table
+# Boss inherits from Enemy!
+class Boss(Enemy):
+    def __init__(self):
+        super().__init__(hp=1000)
+    
+    # Boss has a second phase instead of dying immediately
+    def die(self):
+        print("FOOLS! This isn't even my final form! 🐉")
+        self.hp = 1000
 
-    def execute(self, context):
-        print(f"  📥 Loading into {self.schema}.{self.table}...")
-        return {"rows_inserted": 1500}
+mob1 = Zombie()
+mob1.take_damage(60) # Zombie groans and drops Rotten Flesh! 🧟
 
-# Polymorphism — same .run(), different behavior
-for task in [APIExtractOperator("extract", "/api/orders"),
-             RedshiftLoadOperator("load", "analytics", "orders")]:
-    task.run()`
-          },
-          {
-            label: "🎨 Mixins — multiple inheritance done right",
-            language: "python",
-            code: `class LoggingMixin:
-    def log(self, message, level="INFO"):
-        print(f"[{level}] {self.__class__.__name__}: {message}")
-
-class MetricsMixin:
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._metrics = {}
-
-    def track(self, metric_name, value):
-        self._metrics[metric_name] = value
-
-class SmartOperator(LoggingMixin, MetricsMixin, BaseOperator):
-    def __init__(self, task_id, **kwargs):
-        super().__init__(task_id, **kwargs)
-
-    def execute(self, context):
-        self.log("Starting execution")       # from LoggingMixin
-        self.track("start_time", "2024-01")  # from MetricsMixin
-        return {"processed": 42}
-
-op = SmartOperator("smart_task")
-op.run()
-print(SmartOperator.__mro__)  # check resolution order`
+boss = Boss()
+boss.take_damage(1000) # FOOLS! This isn't even my final form! 🐉`
           }
         ],
         gotchas: [
-          { title: "Forgetting super().__init__()", body: "Parent class doesn't initialize, stuff breaks silently. Always call super().__init__()." },
-          { title: "Diamond problem", body: "With multiple inheritance, if two parents have the same method, MRO decides which runs. Use Class.__mro__ to check." },
-          { title: "Deep inheritance hierarchies", body: "More than 3 levels deep usually means your design needs rethinking. Favor composition over inheritance." }
+          { title: "Forgetting super().__init__()", body: "If you don't call super() in the child's __init__, the parent's __init__ never runs, and the child won't have the parent's instance variables." }
         ],
-        de_relevance: "Inheritance is the foundation of every framework. <strong>Airflow</strong>: <code>BaseOperator → MyOperator</code>. <strong>Pydantic</strong>: <code>BaseModel → UserModel</code>. <strong>FastAPI</strong>: <code>BaseSettings → Settings</code>. <strong>SQLAlchemy</strong>: <code>Base → User</code>. Understanding inheritance means you can read framework source code and write custom operators properly.",
+        real_world: "In web development frameworks like Django or React, nobody writes a Web Page from scratch. Codebases provide a base `class View:` or `class Component:`. You create your specific page by inheriting from it (`class HomePage(Component):`). You get rendering, routing, and lifecycle events absolutely free, and you just fill in what text should show up on screen.",
         quiz: [
-          { q: "What does super() do?", options: ["Creates a class", "Calls parent method", "Makes static", "Deletes parent"], answer: 1, explanation: "super() gives access to the parent class — most commonly for calling parent's __init__." },
-          { q: "MRO stands for:", options: ["Method Return Object", "Multiple Reference Order", "Method Resolution Order", "Module Run Order"], answer: 2, explanation: "Method Resolution Order — Python's algorithm for deciding which method to call." },
-          { q: "Polymorphism means:", options: ["Multiple inheritance", "Same interface, different behavior", "Private methods", "Static typing"], answer: 1, explanation: "Same method name but each class does it differently. That's polymorphism!" }
+          { q: "What does super() do?", options: ["Creates a super class", "Calls parent method", "Deletes parent obj", "Makes it fast"], answer: 1, explanation: "super() accesses the parent class — usually so you can run the parent's setup method." }
         ],
-        resources: [
-          { label: "Python Docs — Inheritance", url: "https://docs.python.org/3/tutorial/classes.html#inheritance" },
-          { label: "Real Python — Inheritance & Composition", url: "https://realpython.com/inheritance-composition-python/" }
-        ]
+        resources: []
       }
     },
     {
       id: "t11",
       name: "Dunder Methods",
       imp: "high",
-      subtopics: ["__eq__/__lt__/__hash__", "__len__/__getitem__", "__enter__/__exit__", "__call__"],
+      subtopics: ["__eq__/__lt__", "__len__/__getitem__", "__enter__/__exit__", "__call__"],
       content: { locked: true }
     },
     {
       id: "t12",
-      name: "Dataclasses & NamedTuples",
+      name: "Dataclasses",
       imp: "high",
-      subtopics: ["@dataclass decorator", "field() options", "frozen dataclasses", "dataclass vs namedtuple"],
+      subtopics: ["@dataclass", "field()", "frozen", "vs namedtuple"],
       content: { locked: true }
     }
   ]
