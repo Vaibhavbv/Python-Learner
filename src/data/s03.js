@@ -7,7 +7,7 @@ export const s03 = {
     {
       id: "t09",
       name: "Classes & Objects",
-      imp: "must",
+      imp: "must", time: "15 min", difficulty: "Brain-melter",
       subtopics: ["__init__/__repr__/__str__", "instance vs class vars", "self keyword", "object lifecycles"],
       content: {
         locked: false,
@@ -85,7 +85,7 @@ charizard.attack(pikachu)  # ⚡ Charizard attacks Pikachu for 40 damage!`
     {
       id: "t10",
       name: "Inheritance & Polymorphism",
-      imp: "must",
+      imp: "must", time: "18 min", difficulty: "Wizardry",
       subtopics: ["single & multiple inheritance", "super()", "method overriding", "MRO"],
       content: {
         locked: false,
@@ -164,14 +164,14 @@ boss.take_damage(1000) # FOOLS! This isn't even my final form! 🐉`
     {
       id: "t11",
       name: "Dunder Methods",
-      imp: "high",
+      imp: "high", time: "10 min", difficulty: "Advanced",
       subtopics: ["__eq__/__lt__", "__len__/__getitem__", "__enter__/__exit__", "__call__"],
       content: { locked: true }
     },
     {
       id: "t12",
       name: "Dataclasses",
-      imp: "high",
+      imp: "high", time: "5 min", difficulty: "Moderate",
       subtopics: ["@dataclass", "field()", "frozen", "vs namedtuple"],
       content: { locked: true }
     }

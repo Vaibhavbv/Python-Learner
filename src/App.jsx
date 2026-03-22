@@ -5,7 +5,7 @@ import Hero from './components/Hero'
 import ProgressBar from './components/ProgressBar'
 import FilterBar from './components/FilterBar'
 import SectionBlock from './components/SectionBlock'
-import SearchModal from './components/SearchModal'
+import CommandPalette from './components/CommandPalette'
 import ThemeToggle from './components/ThemeToggle'
 import { ALL_SECTIONS } from './data'
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -17,7 +17,7 @@ function AppContent() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [expandedTopic, setExpandedTopic] = useState(null)
 
-  useHotkeys('/', (e) => {
+  useHotkeys('meta+k, ctrl+k, /', (e) => {
     e.preventDefault()
     setSearchOpen(true)
   })
@@ -96,7 +96,7 @@ function AppContent() {
         </footer>
       </div>
 
-      <SearchModal
+      <CommandPalette
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
         onSelectTopic={(topicId) => {

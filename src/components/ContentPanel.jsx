@@ -3,6 +3,7 @@ import hljs from 'highlight.js/lib/core'
 import python from 'highlight.js/lib/languages/python'
 import 'highlight.js/styles/atom-one-dark.min.css'
 import QuizBlock from './QuizBlock'
+import PythonSandbox from './PythonSandbox'
 
 hljs.registerLanguage('python', python)
 
@@ -32,6 +33,111 @@ function CopyButton({ code }) {
     >
       {copied ? 'copied ✓' : 'copy'}
     </button>
+  )
+}
+
+const XRAY_TIPS = {
+  'def': 'Defines a new function block',
+  'class': 'Creates a new object blueprint',
+  'return': 'Exits function and spits out a value',
+  'import': 'Pulls in external modules',
+  'for': 'Loops exactly N times over an iterable',
+  'while': 'Loops forever until condition breaks',
+  'if': 'Conditional branch',
+  'elif': 'Chained conditional branch',
+  'else': 'Catch-all fallback branch',
+  'try': 'Attempts risky code',
+  'except': 'Catches exceptions (errors)',
+  'with': 'Context manager (auto-cleans up resources)',
+  'True': 'Boolean 1',
+  'False': 'Boolean 0',
+  'None': 'Null equivalent in Python',
+  'print': 'Spits output directly to terminal',
+  'len': 'Gets the length/size of an object',
+  'type': 'Checks what class an object came from',
+}
+
+function XRayCodeBlock({ block }) {
+  const [xray, setXray] = useState(false)
+  const [sandboxOpen, setSandboxOpen] = useState(false)
+  const codeRef = useRef()
+
+  useEffect(() => {
+    if (codeRef.current) {
+      hljs.highlightElement(codeRef.current)
+    }
+  }, [block.code])
+
+  useEffect(() => {
+    if (!xray || !codeRef.current) return
+    
+    // Inject tooltips on highlighted syntax elements
+    codeRef.current.querySelectorAll('.hljs-keyword, .hljs-built_in, .hljs-literal').forEach(el => {
+      const txt = el.innerText.trim()
+      if (XRAY_TIPS[txt]) {
+        el.setAttribute('data-xray-tip', XRAY_TIPS[txt])
+        el.classList.add('xray-active-token')
+      }
+    })
+    
+    return () => {
+      // Cleanup
+      if (codeRef.current) {
+        codeRef.current.querySelectorAll('.xray-active-token').forEach(el => {
+          el.removeAttribute('data-xray-tip')
+          el.classList.remove('xray-active-token')
+        })
+      }
+    }
+  }, [xray, block.code])
+
+  return (
+    <div className="mb-5">
+      <div className="flex justify-between items-end mb-1.5">
+        <p className="font-mono text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+          {block.label}
+        </p>
+        <button
+          onClick={() => setXray(!xray)}
+          className={`font-mono text-[10px] px-2 py-1 rounded transition-all cursor-pointer border flex items-center gap-1 ${xray ? 'shadow-[0_0_10px_var(--accent)]' : ''}`}
+          style={{
+            background: xray ? 'color-mix(in srgb, var(--accent) 20%, transparent)' : 'var(--bg-surface)',
+            borderColor: xray ? 'var(--accent)' : 'var(--border)',
+            color: xray ? 'var(--text-primary)' : 'var(--text-muted)'
+          }}
+        >
+          {xray ? '🪄 X-Ray ON' : '🪄 X-Ray OFF'}
+        </button>
+      </div>
+      
+      {!sandboxOpen ? (
+        <div className={`relative ${xray ? 'xray-mode-wrapper' : ''}`}>
+          <CopyButton code={block.code} />
+          <pre><code ref={codeRef} className={`language-${block.language}`}>{block.code}</code></pre>
+          {block.language === 'python' && (
+            <button 
+              onClick={() => setSandboxOpen(true)}
+              className="mt-2 text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 rounded-md cursor-pointer transition-colors"
+              style={{ background: 'color-mix(in srgb, var(--accent) 15%, transparent)', color: 'var(--accent)', border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)' }}
+            >
+              ⌨️ Run in Sandbox
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="flex justify-end mb-2">
+            <button 
+              onClick={() => setSandboxOpen(false)}
+              className="font-mono text-[10px] px-2 py-1 rounded text-[var(--text-muted)] hover:text-white cursor-pointer"
+            >
+              Close Sandbox ✕
+            </button>
+          </div>
+          <PythonSandbox initialCode={block.code} />
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -95,15 +201,7 @@ export default function ContentPanel({ topic }) {
       {/* Code examples */}
       <SectionTitle>Code Examples</SectionTitle>
       {c.code.map((block, i) => (
-        <div key={i} className="mb-5">
-          <p className="font-mono text-sm font-bold mb-1.5" style={{ color: 'var(--text-primary)' }}>
-            {block.label}
-          </p>
-          <div className="relative">
-            <CopyButton code={block.code} />
-            <pre><code className={`language-${block.language}`}>{block.code}</code></pre>
-          </div>
-        </div>
+        <XRayCodeBlock key={i} block={block} />
       ))}
 
       {/* Gotchas */}

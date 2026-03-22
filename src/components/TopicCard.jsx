@@ -1,23 +1,32 @@
 import { motion } from 'framer-motion'
 import { useProgress } from '../hooks/useProgress'
+import { useSoundEffects } from '../hooks/useSoundEffects'
 
 const IMP_LABELS = { must: 'must know', high: 'high', medium: 'medium', med: 'medium', low: 'good to have' }
 
 export default function TopicCard({ topic, isExpanded, onExpand }) {
   const { done, toggle } = useProgress()
+  const { playPop, playSwoosh } = useSoundEffects()
   const isDone = done.has(topic.id)
   const isLocked = topic.content?.locked
 
   const handleCheck = (e) => {
     e.stopPropagation()
+    playPop()
     toggle(topic.id)
+  }
+
+  const handleExpand = (e) => {
+    e?.stopPropagation()
+    if (!isExpanded) playSwoosh()
+    onExpand()
   }
 
   return (
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ type: 'spring', stiffness: 500 }}
-      onClick={onExpand}
+      onClick={handleExpand}
       className="rounded-lg p-4 cursor-pointer transition-colors duration-200"
       style={{
         background: 'var(--bg-surface)',
@@ -56,15 +65,31 @@ export default function TopicCard({ topic, isExpanded, onExpand }) {
           {topic.name}
         </span>
 
-        <span
-          className="font-mono text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold shrink-0"
-          style={{
-            background: `color-mix(in srgb, var(--${topic.imp}) 15%, transparent)`,
-            color: `var(--${topic.imp})`,
-          }}
-        >
-          {IMP_LABELS[topic.imp] || topic.imp}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span
+            className="font-mono text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold"
+            style={{
+              background: `color-mix(in srgb, var(--${topic.imp}) 15%, transparent)`,
+              color: `var(--${topic.imp})`,
+            }}
+          >
+            {IMP_LABELS[topic.imp] || topic.imp}
+          </span>
+          {(topic.time || topic.difficulty) && (
+            <div className="flex gap-1 mt-1">
+              {topic.time && (
+                <span className="font-mono text-[9px] px-1.5 py-0.5 rounded border" style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+                  ⏱️ {topic.time}
+                </span>
+              )}
+              {topic.difficulty && (
+                <span className="font-mono text-[9px] px-1.5 py-0.5 rounded border" style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+                  🧠 {topic.difficulty}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Subtopics */}
@@ -83,7 +108,7 @@ export default function TopicCard({ topic, isExpanded, onExpand }) {
 
       {/* Expand button */}
       <button
-        onClick={(e) => { e.stopPropagation(); onExpand() }}
+        onClick={handleExpand}
         className="font-mono text-[11px] transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
         style={{ color: 'var(--accent)' }}
       >

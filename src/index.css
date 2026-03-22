@@ -101,3 +101,49 @@ pre code {
   background: #f5f5fa !important;
   border-color: var(--border);
 }
+
+/* X-Ray Mode Interactive Styles */
+.xray-mode-wrapper .hljs {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.xray-mode-wrapper .hljs:hover {
+  opacity: 0.8 !important;
+}
+
+.xray-active-token {
+  opacity: 1 !important;
+  position: relative;
+  cursor: help;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  border-bottom: 2px dashed var(--accent);
+  padding: 0 2px;
+  border-radius: 2px;
+  animation: pulse-glow 2s infinite;
+}
+
+.xray-active-token:hover::after {
+  content: attr(data-xray-tip);
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); }
+  70% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}

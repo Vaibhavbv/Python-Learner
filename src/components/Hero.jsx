@@ -93,7 +93,7 @@ function Scene() {
 }
 
 export default function Hero() {
-  const { count } = useProgress()
+  const { count, rank, streak } = useProgress()
   const [showCanvas, setShowCanvas] = useState(true)
   const pct = Math.round((count / 60) * 100)
 
@@ -120,14 +120,20 @@ export default function Hero() {
           </p>
           <div className="flex gap-3 justify-center md:justify-start mt-4 flex-wrap">
             <span
-              className="font-mono text-xs px-3 py-1.5 rounded-full"
-              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
+              className="font-mono text-xs px-3 py-1.5 rounded-full shadow-sm"
+              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--accent)' }}
             >
-              10 topics loaded
+              👑 {rank}
             </span>
             <span
-              className="font-mono text-xs px-3 py-1.5 rounded-full"
-              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--accent)' }}
+              className="font-mono text-xs px-3 py-1.5 rounded-full shadow-sm"
+              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--high)' }}
+            >
+              🔥 {streak} Day Streak
+            </span>
+            <span
+              className="font-mono text-xs px-3 py-1.5 rounded-full shadow-sm"
+              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
             >
               your progress: {pct}%
             </span>

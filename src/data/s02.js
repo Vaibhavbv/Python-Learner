@@ -7,7 +7,7 @@ export const s02 = {
     {
       id: "t05",
       name: "Lists",
-      imp: "must",
+      imp: "must", time: "5 min", difficulty: "Easy Win",
       subtopics: ["comprehensions", "sorting/slicing", "common operations", "nested lists"],
       content: {
         locked: false,
@@ -62,7 +62,7 @@ for idx, track in enumerate(top_2, 1):
     {
       id: "t06",
       name: "Dictionaries",
-      imp: "must",
+      imp: "must", time: "6 min", difficulty: "Moderate",
       subtopics: ["dict comprehensions", "defaultdict/OrderedDict", ".get()/.items()/.update()", "nested dicts"],
       content: {
         locked: false,
@@ -125,7 +125,7 @@ toxic_level = chat_history[0].get("toxic_score", 0) # Returns 0 instead of crash
     {
       id: "t07",
       name: "Tuples & Sets",
-      imp: "must",
+      imp: "must", time: "8 min", difficulty: "Brain-melter",
       subtopics: ["immutability of tuples", "set operations", "frozenset", "when to use each"],
       content: {
         locked: false,
@@ -188,7 +188,7 @@ print(f"Red channel is {r}")`
     {
       id: "t08",
       name: "Collections Module",
-      imp: "high",
+      imp: "high", time: "10 min", difficulty: "Advanced",
       subtopics: ["Counter/deque", "namedtuple/ChainMap", "heapq", "bisect"],
       content: {
         locked: false,

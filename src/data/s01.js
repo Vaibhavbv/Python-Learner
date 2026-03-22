@@ -7,7 +7,7 @@ export const s01 = {
     {
       id: "t01",
       name: "Data Types & Variables",
-      imp: "must",
+      imp: "must", time: "5 min", difficulty: "Starter",
       subtopics: ["int/float/str/bool", "type()/casting", "None type", "mutable vs immutable"],
       content: {
         locked: false,
@@ -88,7 +88,7 @@ def setup_player_fixed(name, inventory=None):
     {
       id: "t02",
       name: "Control Flow",
-      imp: "must",
+      imp: "must", time: "8 min", difficulty: "Brain-melter",
       subtopics: ["if/elif/else", "for & while loops", "break/continue/pass", "match-case (3.10+)"],
       content: {
         locked: false,
@@ -182,7 +182,7 @@ process_command("attack goblin with sword") # You strike the goblin with your sw
     {
       id: "t03",
       name: "Functions",
-      imp: "must",
+      imp: "must", time: "6 min", difficulty: "Moderate",
       subtopics: ["*args/**kwargs", "default & keyword args", "return values", "LEGB scope rule"],
       content: {
         locked: false,
@@ -252,7 +252,7 @@ print(player["links"])        # {'twitter': '@sniper', 'twitch': 'twitch.tv/snpr
     {
       id: "t04",
       name: "String Manipulation",
-      imp: "must",
+      imp: "must", time: "7 min", difficulty: "Moderate",
       subtopics: ["f-strings/format()", "slicing & indexing", "split/join/strip", "regex basics"],
       content: {
         locked: false,
